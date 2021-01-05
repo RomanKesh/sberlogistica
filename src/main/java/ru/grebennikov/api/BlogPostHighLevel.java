@@ -1,54 +1,56 @@
 package ru.grebennikov.api;
 
 import io.qameta.allure.Step;
+import org.apache.http.HttpStatus;
+import ru.grebennikov.model.PagePost;
 import ru.grebennikov.model.Post;
 
 import java.util.Map;
 
-public class BlogPostHighLevel {
+public final class BlogPostHighLevel extends HighApiLevel {
+    private BlogPostLowLevel blogPostLow;
 
-    @Step
-    public void create(Post post) {
-
+    public BlogPostHighLevel(BlogPostLowLevel blogPostLow) {
+        this.blogPostLow = blogPostLow;
     }
 
     @Step
-    public void list(Map<String, ?> parameters) {
-
+    public Post create(Post post) {
+        return validateResponse(blogPostLow.create(post), HttpStatus.SC_CREATED, Post.class);
     }
 
     @Step
-    public void getArchiveByYear(Integer year, Map<String, ?> parameters) {
-
+    public PagePost list(Map<String, ?> parameters) {
+        return validateResponse(blogPostLow.list(parameters), HttpStatus.SC_OK, PagePost.class);
     }
 
     @Step
-    public void getArchiveByMonth(Integer year, Integer month, Map<String, ?> parameters) {
-
+    public PagePost getArchiveByYear(Integer year, Map<String, ?> parameters) {
+        return validateResponse(blogPostLow.getArchiveByYear(year, parameters), HttpStatus.SC_OK, PagePost.class);
     }
 
     @Step
-    public void getArchiveByDay(Integer year, Integer month, Integer day, Map<String, ?> parameters) {
-
+    public PagePost getArchiveByMonth(Integer year, Integer month, Map<String, ?> parameters) {
+        return validateResponse(blogPostLow.getArchiveByMonth(year, month, parameters), HttpStatus.SC_OK, PagePost.class);
     }
 
     @Step
-    public void get(Integer id) {
+    public PagePost getArchiveByDay(Integer year, Integer month, Integer day, Map<String, ?> parameters) {
+        return validateResponse(blogPostLow.getArchiveByDay(year, month, day, parameters), HttpStatus.SC_OK, PagePost.class);
+    }
 
+    @Step
+    public Post get(Integer id) {
+        return validateResponse(blogPostLow.get(id), HttpStatus.SC_OK, Post.class);
     }
 
     @Step
     public void delete(Integer id) {
-
+        validateResponse(blogPostLow.delete(id), HttpStatus.SC_NO_CONTENT);
     }
 
     @Step
-    public void update(Integer id, Post post) {
-
-    }
-
-    @Step
-    private void checkResponse() {
-
+    public Post update(Integer id, Post post) {
+        return validateResponse(blogPostLow.update(id, post), HttpStatus.SC_OK, Post.class);
     }
 }

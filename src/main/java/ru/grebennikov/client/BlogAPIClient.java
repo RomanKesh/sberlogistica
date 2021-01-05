@@ -31,8 +31,8 @@ public final class BlogAPIClient {
                             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
                 }
         ));
-        this.blogPostLow = new BlogPostLowLevel();
-        this.blogPostHigh = new BlogPostHighLevel();
+        this.blogPostLow = new BlogPostLowLevel(this::request);
+        this.blogPostHigh = new BlogPostHighLevel(blogPostLow);
     }
 
     public RequestSpecification request() {

@@ -1,7 +1,6 @@
 package ru.grebennikov.api;
 
 final class APIEndpoints {
-
     // blog/posts   Operations related to blog posts
     static final String CREATE = "/blog/posts/";                                         // Creates a new blog post
     static final String LIST = "/blog/posts/";                                           // Returns list of blog posts

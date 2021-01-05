@@ -28,7 +28,7 @@ public class BaseTest {
     }
 
     protected Post getSimplePost() {
-        return new Post();
+        return new Post("New title", "New body");
     }
 
     @AfterClass

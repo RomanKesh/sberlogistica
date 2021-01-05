@@ -1,48 +1,81 @@
 package ru.grebennikov.api;
 
 import io.qameta.allure.Step;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class BlogPostLowLevel {
+public final class BlogPostLowLevel extends LowApiLevel {
 
-    @Step
-    public void create(Object body) {
-
+    public BlogPostLowLevel(Supplier<RequestSpecification> request) {
+        super(request);
     }
 
     @Step
-    public void list(Map<String, ?> parameters) {
-
+    public Response create(Object body) {
+        return request()
+                .contentType(ContentType.JSON)
+                .body(body)
+                .post(APIEndpoints.CREATE);
     }
 
     @Step
-    public void getArchiveByYear(Integer year, Map<String, ?> parameters) {
-
+    public Response list(Map<String, ?> parameters) {
+        return request()
+                .params(parameters)
+                .get(APIEndpoints.LIST);
     }
 
     @Step
-    public void getArchiveByMonth(Integer year, Integer month, Map<String, ?> parameters) {
-
+    public Response getArchiveByYear(Integer year, Map<String, ?> parameters) {
+        return request()
+                .pathParam("year", year)
+                .params(parameters)
+                .get(APIEndpoints.ARCHIVE_BY_YEAR);
     }
 
     @Step
-    public void getArchiveByDay(Integer year, Integer month, Integer day, Map<String, ?> parameters) {
-
+    public Response getArchiveByMonth(Integer year, Integer month, Map<String, ?> parameters) {
+        return request()
+                .pathParam("year", year)
+                .pathParam("month", month)
+                .params(parameters)
+                .get(APIEndpoints.ARCHIVE_BY_MONTH);
     }
 
     @Step
-    public void get(Integer id) {
-
+    public Response getArchiveByDay(Integer year, Integer month, Integer day, Map<String, ?> parameters) {
+        return request()
+                .pathParam("year", year)
+                .pathParam("month", month)
+                .pathParam("day", day)
+                .params(parameters)
+                .get(APIEndpoints.ARCHIVE_BY_DAY);
     }
 
     @Step
-    public void delete(Integer id) {
-
+    public Response get(Integer id) {
+        return request()
+                .pathParam("id", id)
+                .get(APIEndpoints.GET);
     }
 
     @Step
-    public void update(Integer id, Object body) {
+    public Response delete(Integer id) {
+        return request()
+                .pathParam("id", id)
+                .delete(APIEndpoints.DELETE);
+    }
 
+    @Step
+    public Response update(Integer id, Object body) {
+        return request()
+                .contentType(ContentType.JSON)
+                .pathParam("id", id)
+                .body(body)
+                .put(APIEndpoints.UPDATE);
     }
 }
