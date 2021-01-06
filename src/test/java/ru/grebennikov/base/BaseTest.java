@@ -21,8 +21,8 @@ public class BaseTest {
     }
 
     protected Post createNewPost(Post post) {
-        Post createdPost = post;
         client.getBlogPostHigh().create(post);
+        Post createdPost = Utils.getCreatedPost(post, client);
         createdPosts.add(createdPost.getId());
         return createdPost;
     }

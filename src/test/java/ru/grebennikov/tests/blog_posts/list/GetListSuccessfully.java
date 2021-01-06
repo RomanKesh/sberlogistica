@@ -2,6 +2,7 @@ package ru.grebennikov.tests.blog_posts.list;
 
 import com.google.common.collect.ImmutableMap;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Story;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.BeforeMethod;
@@ -34,6 +35,7 @@ public class GetListSuccessfully extends BaseTest {
         id = createNewPost(getSimplePost()).getId();
     }
 
+    @Issue("Wrong behaviour with create a new post object")
     @Test(groups = "implemented")
     public void TestUpdateMethod() {
         List<Post> posts = getClient().getBlogPostHigh().list(ImmutableMap.of()).getItems();

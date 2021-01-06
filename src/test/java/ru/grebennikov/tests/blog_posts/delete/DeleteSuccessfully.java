@@ -1,6 +1,7 @@
 package ru.grebennikov.tests.blog_posts.delete;
 
 import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Story;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.BeforeMethod;
@@ -9,6 +10,7 @@ import org.testng.annotations.Test;
 import ru.grebennikov.annotation.TestScenario;
 import ru.grebennikov.annotation.TestStep;
 import ru.grebennikov.base.BaseTest;
+import ru.grebennikov.model.Post;
 
 @Feature("My Blog API")
 @Story("blog/posts Operations related to blog posts")
@@ -30,9 +32,11 @@ public class DeleteSuccessfully extends BaseTest {
 
     @BeforeMethod
     private void precondition() {
-        id = createNewPost(getSimplePost()).getId();
+        Post post = getSimplePost();
+        id = createNewPost(post).getId();
     }
 
+    @Issue("Wrong behaviour with create a new post object")
     @Test(groups = "implemented")
     public void TestUpdateMethod() {
         getClient().getBlogPostHigh().delete(id);

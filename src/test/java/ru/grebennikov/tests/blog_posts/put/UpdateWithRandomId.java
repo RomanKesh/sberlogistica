@@ -1,9 +1,9 @@
 package ru.grebennikov.tests.blog_posts.put;
 
 import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
 import io.qameta.allure.Story;
 import org.apache.http.HttpStatus;
-import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
 import ru.grebennikov.annotation.TestScenario;
 import ru.grebennikov.annotation.TestStep;
@@ -26,11 +26,12 @@ import java.util.Random;
 )
 public class UpdateWithRandomId  extends BaseTest {
 
+    @Issue("Wrong behaviour with create a new post object")
     @Test(groups = "implemented")
     public void TestUpdateMethod() {
         Post expectedBody = new Post("New updated post", "The post after update");
         expectedBody.setCategoryId(2);
-        getClient().getBlogPostLow().update(new Random().nextInt(), expectedBody)
+        getClient().getBlogPostLow().update(new Random().nextInt(100) + 10, expectedBody)
                 .then()
                 .statusCode(HttpStatus.SC_NOT_FOUND);
     }

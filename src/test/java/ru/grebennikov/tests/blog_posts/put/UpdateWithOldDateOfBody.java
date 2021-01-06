@@ -1,6 +1,8 @@
 package ru.grebennikov.tests.blog_posts.put;
 
 import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Issues;
 import io.qameta.allure.Story;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.BeforeMethod;
@@ -8,7 +10,10 @@ import org.testng.annotations.Test;
 import ru.grebennikov.annotation.TestScenario;
 import ru.grebennikov.annotation.TestStep;
 import ru.grebennikov.base.BaseTest;
+import ru.grebennikov.base.Utils;
 import ru.grebennikov.model.Post;
+
+import java.util.Date;
 
 @Feature("My Blog API")
 @Story("blog/posts Operations related to blog posts")
@@ -31,12 +36,16 @@ public class UpdateWithOldDateOfBody  extends BaseTest {
         post = createNewPost(getSimplePost());
     }
 
+    @Issues({@Issue("Wrong behaviour with create a new post object"), @Issue("Clarification about the \"pub_date\" field for \"Post\" object")})
     @Test(groups = "implemented")
     public void TestUpdateMethod() {
         Post expectedBody = new Post("New updated post", "The post after update");
         expectedBody.setCategoryId(2);
-        expectedBody.setPubDate();
-        Post actualResult = getClient().getBlogPostHigh().update(post.getId(), expectedBody);
+        Date date = new Date();
+        date.setTime(100);
+        expectedBody.setPubDate(date.toString());
+        getClient().getBlogPostHigh().update(post.getId(), expectedBody);
+        Post actualResult = Utils.getCreatedPost(expectedBody, getClient());
         SoftAssertions.assertSoftly(softAssertions -> {
             softAssertions.assertThat(actualResult.getTitle()).isEqualTo(expectedBody.getTitle());
             softAssertions.assertThat(actualResult.getBody()).isEqualTo(expectedBody.getBody());
