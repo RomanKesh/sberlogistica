@@ -2,7 +2,9 @@ package ru.grebennikov.base;
 
 import lombok.Getter;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import ru.grebennikov.client.BlogAPIClient;
 import ru.grebennikov.model.Post;
 
@@ -16,7 +18,7 @@ public class BaseTest {
     private List<Integer> createdPosts = new ArrayList<>();
 
     @BeforeClass
-    private void beforeInit() {
+    public final void beforeInit() {
         client = new BlogAPIClient(URL);
     }
 
@@ -32,7 +34,7 @@ public class BaseTest {
     }
 
     @AfterClass
-    private void removeAllCreatedObjects() {
+    public final void removeAllCreatedObjects() {
         createdPosts.forEach(post -> client.getBlogPostLow().delete(post));
         createdPosts.clear();
     }

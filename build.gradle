@@ -27,8 +27,6 @@ test {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.0'
     // https://mvnrepository.com/artifact/org.testng/testng
     testCompile group: 'org.testng', name: 'testng', version: '7.3.0'
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core

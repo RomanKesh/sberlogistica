@@ -11,10 +11,12 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.specification.RequestSpecification;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j;
 import ru.grebennikov.api.BlogPostHighLevel;
 import ru.grebennikov.api.BlogPostLowLevel;
 
 @Getter
+@Log4j
 public final class BlogAPIClient {
     private String baseUrl;
     private BlogPostLowLevel blogPostLow;
