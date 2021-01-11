@@ -17,7 +17,7 @@ public abstract class HighApiLevel {
         P body = validateResponse(response, status)
                 .contentType(ContentType.JSON)
                 .extract().as(clazz);
-        checkRequiredFieldsIsNotNull(body);
+        //checkRequiredFieldsIsNotNull(body);
         return body;
     }
 

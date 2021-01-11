@@ -30,7 +30,10 @@ public class BaseTest {
     }
 
     protected Post getSimplePost() {
-        return new Post("New title", "New body");
+        Post post = new Post("New test title", "New test body");
+        post.setCategoryId(1);
+        post.setCategory("Sci-Fi");
+        return post;
     }
 
     @AfterClass
