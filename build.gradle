@@ -1,5 +1,16 @@
 buildscript {
+    ext.versions = [
+            log4j: '1.2.17',
+            testng: '7.3.0',
+            jackson: '2.12.0',
+            assertj: '3.18.1',
+            restAssured: '4.3.3',
+            lombok: '1.18.16',
+            googleGuava: '30.1-jre',
+            allure: '2.13.8'
+    ]
     repositories {
+        mavenCentral()
         jcenter()
     }
     dependencies {
@@ -9,17 +20,34 @@ buildscript {
 
 plugins {
     id 'java'
-    id "io.qameta.allure" version "2.8.1"
+    id 'io.qameta.allure' version '2.8.1'
 }
 
-group 'ru.grebennikov'
-version '1.0-SNAPSHOT'
+allprojects {
+    description 'Testing project for Sberlogistica home work'
+    group 'ru.grebennikov'
+    version '1.0-SNAPSHOT'
+}
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+configurations {
+    compileOnly.extendsFrom annotationProcessor
+    testCompileOnly.extendsFrom annotationProcessor
+    testAnnotationProcessor.extendsFrom annotationProcessor
+}
 
 repositories {
     mavenCentral()
+    jcenter()
+    mavenLocal()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 test {
@@ -27,36 +55,34 @@ test {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/log4j/log4j
-    compile group: 'log4j', name: 'log4j', version: '1.2.17'
-    // https://mvnrepository.com/artifact/org.testng/testng
-    testCompile group: 'org.testng', name: 'testng', version: '7.3.0'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.0'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.0'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.12.0'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jdk8
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: '2.12.0'
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
-    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.12.0'
-    // https://mvnrepository.com/artifact/org.assertj/assertj-core
-    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.18.1'
-    // https://mvnrepository.com/artifact/io.rest-assured/rest-assured
-    compile group: 'io.rest-assured', name: 'rest-assured', version: '4.3.3'
-    // https://mvnrepository.com/artifact/com.google.guava/guava
-    implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
-    // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
-    // https://mvnrepository.com/artifact/io.qameta.allure/allure-testng
-    implementation group: 'io.qameta.allure', name: 'allure-testng', version: '2.13.8'
-    // https://mvnrepository.com/artifact/io.qameta.allure/allure-okhttp3
-    implementation group: 'io.qameta.allure', name: 'allure-okhttp3', version: '2.13.8'
+    
+    implementation group: 'log4j', name: 'log4j', version: "${versions.log4j}"
+    
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${versions.jackson}"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: "${versions.jackson}"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${versions.jackson}"
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jdk8', version: "${versions.jackson}"
+    implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: "${versions.jackson}"
+    
+    implementation group: 'io.rest-assured', name: 'rest-assured', version: "${versions.restAssured}"
+    
+    implementation group: 'com.google.guava', name: 'guava', version: "${versions.googleGuava}"
+    
+    runtimeOnly group: 'io.qameta.allure', name: 'allure-generator', version: "${versions.allure}"
+    implementation group: 'io.qameta.allure', name: 'allure-java-commons', version: "${versions.allure}"
+    implementation group: 'io.qameta.allure', name: 'allure-testng', version: "${versions.allure}"
+    implementation group: 'io.qameta.allure', name: 'allure-okhttp3', version: "${versions.allure}"
+    
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${versions.lombok}"
+    
+    testImplementation group: 'org.testng', name: 'testng', version: "${versions.testng}"
+    
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: "${versions.assertj}"
 }
 
 allure {
     version = '2.2.1'
     autoconfigure = true
     aspectjweaver = true
+    allureJavaVersion = "${versions.allure}"
 }
